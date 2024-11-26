@@ -1,0 +1,104 @@
+Descriptor:
+  Name: Custom plugin email investigation
+  DisplayName: Custom plugin email investigation
+  Description: This plugin provides KQL queries to perform e-mail and mailbox investigations. https://github.com/Azure/Copilot-For-Security
+  Icon: https://raw.githubusercontent.com/RickKotlarz/icons/refs/heads/main/Microsoft%20Entra%20architecture%20icons%20-%20Oct%202023/Microsoft%20Entra%20architecture%20icons%20-%20Oct%202023/Microsoft%20Blue%2048x48%20Grey%20%26%20Blue%20Icon/Mail%20Error.svg
+
+
+#############################################################################################
+# These settings will be prompted to the end user during plugin installation. 
+#   Reference to values stored within the variables are used by Sentinel KQL queries.
+#############################################################################################
+
+  Settings:
+    - Name: TenantId
+      Description: Your Azure Tenant ID where the Sentinel workspace is in.
+      HintText: Enter your Azure Tenant ID
+      SettingType: string
+      Required: true
+      
+    - Name: SubscriptionId
+      Description: Your Azure Subscription ID where the Sentinel workspace is provisioned.
+      SettingType: string
+      Required: true
+      HintText: Enter your Azure Subscription ID.
+    
+    - Name: WorkspaceName
+      Description: The name Sentinel workspace that you'd like to reference.
+      SettingType: string
+      Required: true
+      HintText: Enter the Sentinel workspace that you'd like to reference.
+      
+    - Name: ResourceGroupName
+      Description: The Resource Group where the Sentinel workspace is provisioned..
+      SettingType: string
+      HintText: Enter your Resource Group where the Sentinel workspace is provisioned.
+      Required: true
+
+#####################################################################################
+# The 'SupportedAuthTypes' field set to 'None' is required for the plugin settings 
+#   configuration window to present 'Settings' variable fields to the end user.
+#####################################################################################
+
+  SupportedAuthTypes:
+    - None
+
+#####################################################################################
+# SkillGroups can be a single type (KQL, GPT, API) or contain a mix
+#####################################################################################
+    
+SkillGroups:
+  - Format: KQL
+    Skills:
+    
+#####################################################################################
+
+      - Name: GetMailboxRulesUsingOfficeActivityTable
+        DisplayName: Get Mailbox rules using OfficeActivity table
+        Description: |
+          Gets Entra mailbox rules for a user within a certain time frame using the OfficeActivity KQL table
+        ExamplePrompts:
+          - Get mailbox rules for over the last days using the OfficeActivity KQL table
+          - Get mailbox rules using the OfficeActivity KQL table
+          - Get mailbox rules for user over the last days
+          - For the last days get mailbox rules for user
+          - For the last days get mailbox rules for mailbox
+          - Get mailbox rules for mailbox over the last days
+        Inputs:
+          - Name: TimeFrameToSearch
+            PlaceholderValue: The time range for the query (e.g., 1d, 7d)
+            Description: Time range to perform a KQL query in the format of day number followed by `d`.
+            DefaultValue: 7d
+            Required: false
+          - Name: UserMailBox
+            PlaceholderValue: Users e-mail mailbox address
+            Description: Users e-mail mailbox address
+            DefaultValue: 
+            Required: true
+#=====================================================================================
+# These 'Settings' are required when the 'Target' type uses Sentinel. Variables used
+#   within the curly brackets are refrences to those within 'Settings' area at the top
+#   of the plugin (line
+#=====================================================================================
+        Settings:
+          Target: Sentinel
+          TenantId: '{{TenantId}}'
+          SubscriptionId: '{{SubscriptionId}}'
+          ResourceGroupName: '{{ResourceGroupName}}'
+          WorkspaceName: '{{WorkspaceName}}'
+#=====================================================================================
+          Template: |-
+            // This KQL query retrieves sign-in logs from the SigninLogs table for the past  days, summarizing the most recent sign-in for each user by UPN, and then displays only the UPN and  LastSignInDate fields.
+            //Run query - Find Suspicious Rules Created
+            let TimePeriod = {{TimeFrameToSearch}}; // Search for the past 30 days
+            let CompromisedUser ="{{UserMailBox}}"; // update email address field with the employee email you are searching for. Lower case.
+            OfficeActivity
+            |where TimeGenerated >=ago(TimePeriod)
+            |extend EST =datetime_utc_to_local(TimeGenerated,"US/Eastern")
+            |where tolower(UserId) in (CompromisedUser)
+            | where Operation == "New-InboxRule" or Operation =="Set-InboxRule"
+            | extend Name_ = tostring(parse_json(Parameters)[3].Name)
+            | extend Value_ = tostring(parse_json(Parameters)[3].Value)
+            | extend Value2_ = tostring(parse_json(Parameters)[4].Value)
+            | extend Value4_ = tostring(parse_json(Parameters)[4].Value)
+            //| where  Value4_ has_any (KeywordList) or Value_ has_any (NameValue)
