@@ -1,0 +1,87 @@
+# Spacing matters between parent and child objects. Hitting enter is fine, but tabular spaces will cause errors.
+# Plugin updated 2024-11-08
+
+Descriptor:
+  Name: Entra-risk-users-sample-plugin
+  DisplayName: Entra-risk-users-sample-plugin
+  Description: Entra-risk-users-sample-plugin
+#  Source: https://github.com/MicrosoftDocs/architecture-center/blob/main/docs/_images/i-security.svg
+
+
+#############################################################################################
+# These settings will be prompted to the end user during plugin installation. 
+#   Reference to values stored within the variables are used by Sentinel KQL queries.
+#############################################################################################
+
+  Settings:
+    - Name: TenantId
+      Description: Your Azure Tenant ID where the Sentinel workspace is in.
+      HintText: Enter your Azure Tenant ID
+      SettingType: string
+      Required: true
+      
+    - Name: SubscriptionId
+      Description: Your Azure Subscription ID where the Sentinel workspace is provisioned.
+      SettingType: string
+      Required: true
+      HintText: Enter your Azure Subscription ID.
+    
+    - Name: WorkspaceName
+      Description: The name Sentinel workspace that you'd like to reference.
+      SettingType: string
+      Required: true
+      HintText: Enter the Sentinel workspace that you'd like to reference.
+      
+    - Name: ResourceGroupName
+      Description: The Resource Group where the Sentinel workspace is provisioned..
+      SettingType: string
+      HintText: Enter your Resource Group where the Sentinel workspace is provisioned.
+      Required: true
+
+#####################################################################################
+# The 'SupportedAuthTypes' field set to 'None' is required for the plugin settings 
+#   configuration window to present 'Settings' variable fields to the end user.
+#####################################################################################
+
+  SupportedAuthTypes:
+    - None
+
+#####################################################################################
+# SkillGroups can be a single type (KQL, GPT, API) or contain a mix
+#####################################################################################
+    
+SkillGroups:
+  - Format: KQL
+    Skills:
+
+      - Name: GetRiskyUserSigninData
+        DisplayName: Get Entra risky user sign-in data for the last 24 hours
+        Description: |
+          Gets Entra risky user sign-in data for the last 24 hours
+        ExamplePrompts:
+          - Get risky user sign-in data for the last 24 hours
+          - Get risky user sign-in data for the last day
+        Settings:
+#=====================================================================================
+# These 'Settings' are required when the 'Target' type uses Sentinel. Variables used
+#   within the curly brackets are refrences to those within 'Settings' area at the top
+#   of the plugin (line
+#=====================================================================================
+          Target: Sentinel
+          TenantId: '{{TenantId}}'
+          SubscriptionId: '{{SubscriptionId}}'
+          ResourceGroupName: '{{ResourceGroupName}}'
+          WorkspaceName: '{{WorkspaceName}}'
+#=====================================================================================
+          Template: |-
+            // This KQL query retrieves sign-in logs from Entra KQL             
+            let risky_signins = SigninLogs
+            | where TimeGenerated >= ago(24h)
+            | where RiskLevelAggregated in ("high", "medium")
+            | project TimeGenerated, UserDisplayName, UserPrincipalName, RiskLevelAggregated, RiskState, IPAddress, Location;
+            let risky_user_events = AADUserRiskEvents
+            | where TimeGenerated >= ago(24h)
+            | where RiskDetail in ("adminConfirmedSigninCompromised", "adminConfirmedSigninSafe", "aiConfirmedSigninSafe", "userPerformanSecuredPasswordReset")
+            | project TimeGenerated, UserDisplayName, UserPrincipalName, RiskDetail, IpAddress, Location;
+            risky_signins
+            | union risky_user_events  
