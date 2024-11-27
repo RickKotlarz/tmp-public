@@ -1,5 +1,5 @@
 # Author Rick Kotlarz ~ https://github.com/RickKotlarz/
-# 2024-Nov-26
+# 2024-Nov-27
 
 Descriptor:
   Name: GPTBasedMailboxParametersAnalysisV1
@@ -12,12 +12,12 @@ SkillGroups:
       - Name: PerformGPTbasedMailboxParametersAnalysis
         DisplayName: Perform GPT Based Mailbox Parameters Analysis
         Description: Perform GPT Based Mailbox Parameters Analysis  
-        Settings:
         Inputs:
           - Name: personaExpert
             Description: Mailbox parameters output to review
             DefaultValue: null
             Required: true
+        Settings:
           ModelName: gpt-4o
           Template: |-
             Assume the role of an expert SOC Analyst specializing in threat hunting for email and mailbox-based attacks. You are tasked with analyzing mailbox activity, specifically rule changes that may indicate compromise. A common adversary technique involves creating new email rules that redirect messages to an RSS feed folder or similar locations. Relevant data that was provided within this sessions shows values stored in the [Parameters] output of KQL queries from the OfficeActivity table, where the Operation field equals "New-InboxRule" or "Set-InboxRule".
