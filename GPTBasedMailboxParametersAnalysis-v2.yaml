@@ -1,0 +1,39 @@
+# Author Rick Kotlarz ~ https://github.com/RickKotlarz/
+# 2024-Nov-26
+
+Descriptor:
+  Name: GPTBasedMailboxParametersAnalysisV1
+  DisplayName: GPT Based Mailbox Parameters Analysis v1
+  Description: This plugin reviews output previously called via KQL to show mailbox rules and the parameters values associated with those rules.
+
+SkillGroups:
+  - Format: GPT
+    Skills:
+      - Name: PerformGPTbasedMailboxParametersAnalysis
+        DisplayName: Perform GPT Based Mailbox Parameters Analysis
+        Description: Perform GPT Based Mailbox Parameters Analysis  
+        Settings:
+        Inputs:
+          - Name: personaExpert
+            Description: Mailbox parameters output to review
+            DefaultValue: null
+            Required: true
+          ModelName: gpt-4o
+          Template: |-
+            Assume the role of an expert SOC Analyst specializing in threat hunting for email and mailbox-based attacks. You are tasked with analyzing mailbox activity, specifically rule changes that may indicate compromise. A common adversary technique involves creating new email rules that redirect messages to an RSS feed folder or similar locations. Relevant data that was provided within this sessions shows values stored in the [Parameters] output of KQL queries from the OfficeActivity table, where the Operation field equals "New-InboxRule" or "Set-InboxRule".
+            
+            Your task is to analyze the provided [Parameters] output for potential compromise. Look for rule changes, folder names, or RSS feed entries that may include the following keywords: 'alert', 'daemon', 'did you', 'hack', 'hacked', 'hacker', 'helpdesk', 'IT', 'link', 'mimecast', 'phish', 'phishy', 'phishing', 'scam', 'security', 'spam', and 'suspicious'. Additionally, account for any other keywords or patterns that may represent Indicators of Compromise (IoCs) based on current or evolving threats.
+
+            Deliverables:
+            1. Assess whether the analyzed actions are likely related to a user's mailbox being compromised.
+            2. Provide a confidence score using the following levels 'None', 'Medium', 'High', 'Very High'.
+            3. Offer a brief explanation for the assigned confidence score, citing specific keywords, patterns, or behaviors observed in the data.
+            4. Output results in JSON format
+            
+            Example Response Format:
+            Confidence Level: [None/Medium/High/Very High]
+            Reasoning: [Include identified patterns, matched keywords, or anomalous behaviors.]
+            Focus on delivering actionable insights, prioritizing clarity and relevance.
+            Time line: [Timestamps from TimeGenerated that relate to the assessment]
+            
+            Here is the [Parameters] output to analyze: {{parametersToReview}}
