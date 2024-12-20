@@ -2,18 +2,31 @@ Descriptor:
   Name: SampleAPIForApiKeyAuth
   DisplayName: httpbin.org - API Key Authentication
   Description: Plugin for making example http requests
+  
   SupportedAuthTypes:
     - ApiKey
-  Authorization:
-    Type: APIKey
-    Key: x-xdr-auth-id
-    Location: Header
-    AuthScheme: ''
 
-    Type: APIKey
-    Key: Authorization
-    Location: Header
-    AuthScheme: ''    
+  Settings:
+  - Name: x-xdr-auth-id                  # Links to the template
+    Label: API key ID                    # Used for the UI only
+    Description: Enter your API key ID   # Used for the UI only
+    HintText: Enter API key ID           # Used for the UI only
+    SettingType: String                  # Used to ensure the key is visible to the user (default is 'SecretString')
+    Required: true
+
+  - Name: Authorization
+    Label: API key                       # Used for the UI only
+    Description: Enter your API key      # Used for the UI only
+    HintText: Enter API key              # Used for the UI only
+    SettingType: String                  # Used to ensure the key is visible to the user (default is 
+    Required: true
+
+
+#  Authorization:
+#    Type: APIKey
+#    Key: x-test-api-key                 # Sent to the endpoint as a string along with value
+#    Location: Header
+#    AuthScheme: ''
 
 SkillGroups:
   - Format: API
