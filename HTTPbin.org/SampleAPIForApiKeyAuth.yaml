@@ -16,4 +16,4 @@ Descriptor:
 SkillGroups:
   - Format: API
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/main/HTTPbin.org/openapi.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/HTTPbin.org/openapi.yaml
