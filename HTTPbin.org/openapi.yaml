@@ -16,7 +16,7 @@ paths:
             parameters:
               - name: x-xdr-auth-id
                 in: header
-                required: true
+                required: false
                 description: my API auth ID
                 schema:
                   type: string
