@@ -6,20 +6,6 @@ Descriptor:
   SupportedAuthTypes:
     - ApiKey
 
-  Settings:
-  - Name: x-xdr-auth-id                  # Links to the template
-    Label: API key ID                    # Used for the UI only
-    Description: Enter your API key ID   # Used for the UI only
-    HintText: Enter API key ID           # Used for the UI only
-    SettingType: String                  # Used to ensure the key is visible to the user (default is 'SecretString')
-    Required: true
-
-  - Name: Authorization
-    Label: API key                       # Used for the UI only
-    Description: Enter your API key      # Used for the UI only
-    HintText: Enter API key              # Used for the UI only
-    SettingType: String                  # Used to ensure the key is visible to the user (default is 
-    Required: true
 
 
 #  Authorization:
