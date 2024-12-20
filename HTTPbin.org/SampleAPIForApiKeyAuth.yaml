@@ -6,9 +6,14 @@ Descriptor:
     - ApiKey
   Authorization:
     Type: APIKey
-    Key: x-test-api-key
+    Key: x-xdr-auth-id
     Location: Header
     AuthScheme: ''
+
+    Type: APIKey
+    Key: Authorization
+    Location: Header
+    AuthScheme: ''    
 
 SkillGroups:
   - Format: API
