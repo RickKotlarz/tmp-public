@@ -11,7 +11,7 @@ Descriptor:
     Key: x-test-api-key                 # Sent to the endpoint as a string along with value
     Location: Header
     AuthScheme: ''
-    Name: Authorization
+#    Name: Authorization
 
 SkillGroups:
   - Format: API
