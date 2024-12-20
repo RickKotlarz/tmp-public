@@ -15,19 +15,13 @@ paths:
             summary: Returns the provided headers
 
             parameters:
-              - name: x-xdr-auth-id
-                in: header
-                required: true
-                description: my API auth ID
-                schema:
-                  type: string
               - name: x-test-api-key
                 in: header
-                required: true
+                required: false
                 description: my API key to use
                 schema:
                   type: string
-                  default: 'default.Api.key.in.file.2'
+                  default: '1234'
 
             responses:
                 200:
