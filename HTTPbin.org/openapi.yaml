@@ -13,23 +13,17 @@ paths:
         get: 
             operationId: TestApiKeyAuth
             summary: Returns the provided headers
-
             parameters:
-              - name: x-test-api-key
+              - name: x-xdr-auth-id
                 in: header
-                required: false
-                description: my API key to use
+                required: true
+                description: my API auth ID
                 schema:
                   type: string
-                  default: '1234'
-
+                  default: 24
             responses:
                 200:
-                    description: Successful request.
-                    content:
-                      application/json:
-                        schema:
-                          $ref: '#/components/schemas/Page'
+                  description: Successful request.
 
 components:
   securitySchemes:
