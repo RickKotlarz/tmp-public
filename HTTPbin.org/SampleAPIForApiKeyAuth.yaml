@@ -3,7 +3,10 @@ Descriptor:
   DisplayName: httpbin.org - API Key Authentication
   Description: Plugin for making example http requests
   
-
+  
+  SupportedAuthTypes:
+#    - ApiKey
+    
   Settings:
   - Name: x-xdr-auth-id                  # Links to the template
     Label: API key ID                    # Used for the UI only
