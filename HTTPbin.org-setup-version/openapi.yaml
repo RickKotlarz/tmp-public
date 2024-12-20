@@ -1,0 +1,43 @@
+openapi: 3.0.0
+
+info:
+    title: httpbin.org
+    description: A simple HTTP Request & Response Service.
+    version: "0.9.2"
+
+servers:
+    - url: https://httpbin.org/
+     
+paths:
+    /headers:
+        get: 
+            operationId: TestApiKeyAuth
+            summary: Returns the provided headers
+            parameters:
+              - name: x-xdr-auth-id
+                in: header
+                required: false
+                description: my API auth ID
+                schema:
+                  type: string
+                  default: 24
+            responses:
+                200:
+                  description: Successful request.
+
+components:
+  securitySchemes:
+    apiKeyIDAuth:              # arbitrary name for the security scheme
+      type: apiKey
+      in: header               # can be "header", "query" or "cookie"
+      name: x-xdr-auth-id      # Value sent to the endpoint in the requested (e.g. {x-xdr-auth-id: 24})
+      description: "yy The API Key ID for authentication."
+    apiKeySecretAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "yy The API Key Secret for authentication."
+  security:
+    - apiKeyIDAuth: []
+      apiKeySecretAuth: []   # <-- No leading dash (-) as this indicates both must be present and NOT either or.
+  
