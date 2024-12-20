@@ -13,14 +13,14 @@ paths:
         get: 
             operationId: TestApiKeyAuth
             summary: Returns the provided headers
-            parameters:
-              - name: x-xdr-auth-id
-                in: header
-                required: false
-                description: my API auth ID
-                schema:
-                  type: string
-                  default: 24
+#            parameters:
+#              - name: x-xdr-auth-id
+#                in: header
+#                required: false
+#                description: my API auth ID
+#                schema:
+#                  type: string
+#                  default: 24
             responses:
                 200:
                   description: Successful request.
