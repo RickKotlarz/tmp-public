@@ -1,0 +1,41 @@
+let TimePeriod = 90d; // Look back period for 30-day moving average to start
+//
+// Step 1: Filter outbound emails and include SenderObjectId
+let OutboundEmails = EmailEvents
+  | where TimeGenerated >= ago(TimePeriod)
+  | where EmailDirection == "Outbound"
+  | project TimeGenerated, SenderFromAddress, SenderObjectId; // Include SenderObjectId
+//
+// Step 2: Aggregate daily outbound email counts per recipient
+let DailyEmailVolume = OutboundEmails
+  | summarize DailyCount = count() by SenderFromAddress, SenderObjectId, bin(TimeGenerated, 1d)
+  | order by SenderFromAddress, TimeGenerated;
+//
+// Step 3: Summarize counts into a series per recipient
+let EmailVolumeSeries = DailyEmailVolume
+  | summarize Days = make_list(TimeGenerated), Counts = make_list(DailyCount) by SenderFromAddress, SenderObjectId;
+//
+// Step 4: Calculate the 30-day moving average (VMA) method using series_fir
+let EmailWithMovingAverage = EmailVolumeSeries
+  | extend MovingAverage = series_fir(Counts, dynamic([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])) // 30-day equal-weight filter
+  | mv-expand Days to typeof(datetime), Counts to typeof(long), MovingAverage to typeof(double)
+  | extend Date = format_datetime(Days, "yyyy-MM-dd") // Format as date only
+  | order by Days asc;
+//
+// Step 5: Identify days with abnormal email volumes
+let AbnormalEmailVolumes = EmailWithMovingAverage
+  | where Counts > 4 * MovingAverage // Threshold to identify the multiplier above the moving average (4x times higher)
+  | extend SpikeRatioPercentage = strcat(tostring(toint(round(((todouble(Counts) - MovingAverage) / MovingAverage * 100), 0))), "%") // Calculate Spike Ratio
+  | project Date, SenderFromAddress, SenderObjectId, DailyCount = Counts, MovingAverage, Deviation = Counts - MovingAverage, SpikeRatioPercentage;
+//
+// Step 6: Deduplicate and Join with IdentityInfo
+AbnormalEmailVolumes
+  | join kind=leftouter (
+      IdentityInfo
+      | summarize AccountUpn = any(AccountUpn), CreatedDateTime = any(CreatedDateTime) by AccountObjectId
+  ) on $left.SenderObjectId == $right.AccountObjectId
+  | project DateOfEmailRatioSpike = Date, SpikeRatioPercentage, SenderFromAddress, AccountUpn, UPNCreationDate = CreatedDateTime, DailyCount, MovingAverage, Deviation
+  | order by DateOfEmailRatioSpike asc, SenderFromAddress asc
+// Date denotes the date where the spike occured over a rolling 30-day period
+// For each date in the 90-day period, the moving average is computed based on the preceding 30 days of data (including the current date).
+// This means that every day in the 90-day period will have a moving average calculated as long as there are at least 30 days of prior data available.
