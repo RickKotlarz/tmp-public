@@ -3,16 +3,28 @@ Descriptor:
   DisplayName: httpbin.org - API Key Authentication
   Description: Plugin for making example http requests
 
-  SupportedAuthTypes:
-    - ApiKey
+#  SupportedAuthTypes:
+#    - ApiKey
     
-  Authorization:
-    Type: APIKey
-    Key: x-test-api-key                 # Sent to the endpoint as a string along with value
-    Location: Header
-    AuthScheme: ''
+#  Authorization:
+#    Type: APIKey
+#    Key: x-test-api-key                 # Sent to the endpoint as a string along with value
+#    Location: Header
+#    AuthScheme: ''
 
+  Settings:
+    - Name: x-xdr-auth-id
+      Description: your api key id
+      HintText: enter your api key id
+      SettingType: string
+      Required: true
+    - Name: Authorization
+      Description: your api key id
+      HintText: enter your api key id
+      SettingType: string
+      Required: true
+    
 SkillGroups:
   - Format: API
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/HTTPbin.org/openapi.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/main/HTTPbin.org-setup-version/openapi.yaml
