@@ -3,23 +3,23 @@ openapi: 3.0.0
 info:
   title: httpbin.org
   description: A simple HTTP Request & Response Service.
-  version: "0.9.10"
+  version: "0.9.11"
 
 servers:
   - url: https://httpbin.org/
      
 paths:
-    /headers:
-      get:
-        operationId: TestApiKeyAuth
-        summary: Returns the provided headers
-        parameters:
-          - $ref: '#/components/parameters/x-xdr-auth-id'
-        responses:
-          "200":
-            description: OK
-          "400":
-            description: Bad request, invalid parameters
+  /headers:
+    get:
+      operationId: TestApiKeyAuth
+      summary: Returns the provided headers
+      parameters:
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request, invalid parameters
 
 components:
   parameters:
