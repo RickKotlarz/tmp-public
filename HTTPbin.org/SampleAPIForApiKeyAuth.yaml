@@ -1,8 +1,16 @@
 Descriptor:
   Name: SampleAPIForApiKeyAuth
   DisplayName: httpbin.org - API Key Authentication
-  Description: Plugin for making example http requests
+  Description: Plugin for making example http requests - v0.9.3
 
+  Settings:
+    - Name: settingTestName                # Links to the plugin but not used yet for this plugin
+      Label: Label in the UI               # Used for the UI only
+      Description: Description goes here   # Used for the UI only
+      HintText: Hint Text goes here        # Used for the UI only
+      SettingType: String                  # Used to ensure the key is visible to the user (default is 'SecretString')
+      Required: false
+      
   SupportedAuthTypes:
     - ApiKey
     
