@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: httpbin.org
   description: A simple HTTP Request & Response Service.
-  version: "0.9.11"
+  version: "0.9.12"
 
 servers:
   - url: https://httpbin.org/
@@ -30,7 +30,8 @@ components:
       description: "My API auth ID"
       schema:
         type: string
-        default: 1234        # API authentication ID to be passed during each request
+#        default: 1234          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
+        default: {{settingTestName}}
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
@@ -45,3 +46,4 @@ components:
   security:
     - apiKeyIDAuth: []
       apiKeySecretAuth: []   # <-- No leading dash (-) as this indicates both must be present and NOT either or.
+  
