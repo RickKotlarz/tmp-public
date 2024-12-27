@@ -3,14 +3,14 @@ openapi: 3.0.0
 info:
   title: httpbin.org
   description: A simple HTTP Request & Response Service.
-  version: "0.9.8"
+  version: "0.9.9"
 
 servers:
   - url: https://httpbin.org/
      
 paths:
     /headers:
-      get: 
+      get:
         operationId: TestApiKeyAuth
         summary: Returns the provided headers
         parameters:
