@@ -21,35 +21,15 @@ paths:
           400:
             description: Bad request, invalid parameters
 
-
-    /headers/{testInputVariable}:
-      get: 
-        operationId: TestApiKeyAuthv2
-        summary: Returns the provided headers
-        parameters:
-          - $ref: '#/components/parameters/x-xdr-auth-id'
-          - in: path
-            name: testInputVariable
-            schema:
-              type: string
-            required: true
-            placeholderValue: Test input variable
-            description: Test input variable
-        responses:
-          200:
-            description: OK
-          400:
-            description: Bad request, invalid parameters
-
 components:
   parameters:
-    name: x-xdr-auth-id
-    in: header
-    required: false
-    description: my API auth ID
-    schema:
-      type: string
-      default: 1234            # API authentication ID to be passed during each request
+    - in: header
+      name: x-xdr-auth-id
+      required: false
+      description: my API auth ID
+      schema:
+        type: string
+        default: 1234            # API authentication ID to be passed during each request
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
