@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: httpbin.org
   description: A simple HTTP Request & Response Service.
-  version: "0.9.7"
+  version: "0.9.8"
 
 servers:
   - url: https://httpbin.org/
@@ -21,6 +21,7 @@ paths:
             schema:
               type: string
               default: 1234            # API authentication ID to be passed during each request
+        
         responses:
           "200":
             description: OK
@@ -28,6 +29,14 @@ paths:
             description: Bad request, invalid parameters
 
 components:
+  parameters:
+    name: x-xdr-auth-id
+    in: header
+    required: false
+    description: my API auth ID
+    schema:
+      type: string
+      default: 1234            # API authentication ID to be passed during each request
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
@@ -42,3 +51,4 @@ components:
   security:
     - apiKeyIDAuth: []
       apiKeySecretAuth: []   # <-- No leading dash (-) as this indicates both must be present and NOT either or.
+  
