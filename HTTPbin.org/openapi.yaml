@@ -14,22 +14,20 @@ paths:
         operationId: TestApiKeyAuth
         summary: Returns the provided headers
         parameters:
-          - $ref: '#/components/parameters/x-xdr-auth-id'
+          - in: header
+            name: x-xdr-auth-id
+            required: false
+            description: my API auth ID
+            schema:
+              type: string
+              default: 1234            # API authentication ID to be passed during each request
         responses:
-          200:
+          "200":
             description: OK
-          400:
+          "400":
             description: Bad request, invalid parameters
 
 components:
-  parameters:
-    - in: header
-      name: x-xdr-auth-id
-      required: false
-      description: my API auth ID
-      schema:
-        type: string
-        default: 1234            # API authentication ID to be passed during each request
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
@@ -44,4 +42,3 @@ components:
   security:
     - apiKeyIDAuth: []
       apiKeySecretAuth: []   # <-- No leading dash (-) as this indicates both must be present and NOT either or.
-  
