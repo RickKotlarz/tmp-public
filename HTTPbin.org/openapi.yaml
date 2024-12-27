@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: httpbin.org
   description: A simple HTTP Request & Response Service.
-  version: "0.9.9"
+  version: "0.9.10"
 
 servers:
   - url: https://httpbin.org/
@@ -14,14 +14,7 @@ paths:
         operationId: TestApiKeyAuth
         summary: Returns the provided headers
         parameters:
-          - in: header
-            name: x-xdr-auth-id
-            required: false
-            description: my API auth ID
-            schema:
-              type: string
-              default: 1234            # API authentication ID to be passed during each request
-        
+          - $ref: '#/components/parameters/x-xdr-auth-id'
         responses:
           "200":
             description: OK
@@ -30,13 +23,14 @@ paths:
 
 components:
   parameters:
-    name: x-xdr-auth-id
-    in: header
-    required: false
-    description: my API auth ID
-    schema:
-      type: string
-      default: 1234            # API authentication ID to be passed during each request
+    x-xdr-auth-id:
+      name: x-xdr-auth-id
+      in: header
+      required: false
+      description: "My API auth ID"
+      schema:
+        type: string
+        default: "1234"        # API authentication ID to be passed during each request
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
