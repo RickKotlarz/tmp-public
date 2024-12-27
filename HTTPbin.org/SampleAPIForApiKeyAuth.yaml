@@ -1,7 +1,7 @@
 Descriptor:
   Name: SampleAPIForApiKeyAuth
   DisplayName: httpbin.org - API Key Authentication
-  Description: Plugin for making example http requests - v0.9.4
+  Description: Plugin for making example http requests - v0.9.5
 
   Settings:
     - Name: settingTestName                # Links to the plugin but not used yet for this plugin
