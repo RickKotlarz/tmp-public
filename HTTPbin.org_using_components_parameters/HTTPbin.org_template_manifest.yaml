@@ -1,26 +1,53 @@
-Descriptor:
-  Name: SampleAPIForApiKeyAuth
-  DisplayName: httpbin.org - API Key Authentication
-  Description: Plugin for making example http requests - v0.9.16
+# Author Rick Kotlarz ~ https://github.com/RickKotlarz/
+# Updated 2025-01-03
 
-#  Settings:
-#    - Name: settingTestName                # Links to the plugin but not used yet for this plugin
-#      Label: Label in the UI               # Used for the UI only
-#      Description: Description goes here   # Used for the UI only
-#      HintText: Hint Text goes here        # Used for the UI only
-#      SettingType: String                  # Used to ensure the key is visible to the user (default is 'SecretString')
-#      Required: false
-      
-  SupportedAuthTypes:
-    - ApiKey
-    
-  Authorization:
-    Type: APIKey
-    Key: x-test-api-key                 # Sent to the endpoint as a string along with value
-    Location: Header
-    AuthScheme: ''
+openapi: 3.0.0
 
-SkillGroups:
-  - Format: API
-    Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/HTTPbin.org_using_components_parameters/HTTPbin.org_template_OAPI.yaml
+info:
+  title: httpbin.org
+  description: A simple HTTP Request & Response Service.
+  version: "0.9.16"
+
+servers:
+  - url: https://httpbin.org/
+     
+paths:
+  /headers:
+    get:
+      operationId: TestApiKeyAuth
+      summary: Returns the provided headers
+      parameters:
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+        # The above parameter inserts the 'x-xdr-auth-id' and default value into the header when the 'TestApiKeyAuth' is executed by the user.
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request, invalid parameters
+
+components:
+  parameters:
+    x-xdr-auth-id:
+      name: x-xdr-auth-id
+      in: header
+      required: false
+      description: "My API auth ID"
+      schema:
+        type: string
+        default: 1234          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
+#       default: {{settingTestName}}
+  securitySchemes:
+    apiKeyIDAuth:              # Arbitrary name for the security scheme
+      type: apiKey
+      in: header               # Can be "header", "query" or "cookie"
+      name: x-xdr-auth-id      # Value sent to the endpoint in the requested (e.g. {x-xdr-auth-id: 24})
+      description: "The API Key ID for authentication."
+    apiKeySecretAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "The API Key Secret for authentication."
+  security:
+    - apiKeyIDAuth: []
+      apiKeySecretAuth: []   # <-- No leading dash (-) as this indicates both must be present and NOT either OR.
+  
