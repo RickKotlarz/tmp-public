@@ -1,0 +1,116 @@
+Descriptor:
+  Name: Combined Defender and Sentinel Example Plugin
+  DisplayName: Combined Defender and Sentinel example plugin includes both Sentinel and Defender
+  Description: This combined KQL plugin integrates Defender and Sentinel capabilities, providing multiple configuration examples and detailed comments to guide users. Once configured you can invoke each skill directly or by using example prompts to retrieve high and critical Defender alerts from the past 7 days, fetch sign-in data based on UPN over a customizable time frame, and search Sentinel for all IP addresses a specific user has used to sign-in along with the frequency of each IP.
+  DescriptionForModel: This combined KQL plugin integrates Defender and Sentinel capabilities, providing multiple configuration examples and detailed comments to guide users. Once configured you can invoke each skill directly or by using example prompts to retrieve high and critical Defender alerts from the past 7 days, fetch sign-in data based on UPN over a customizable time frame, and search Sentinel for all IP addresses a specific user has used to sign-in along with the frequency of each IP. 
+  Icon: https://raw.githubusercontent.com/MicrosoftDocs/architecture-center/refs/heads/main/docs/_images/i-security.svg
+
+  Settings:
+    - Name: TenantId
+      Description: Your Azure Tenant ID where the Sentinel workspace is in.
+      HintText: Enter your Azure Tenant ID
+      SettingType: string
+      Required: true
+      
+    - Name: SubscriptionId
+      Description: Your Azure Subscription ID where the Sentinel workspace is provisioned.
+      SettingType: string
+      Required: true
+      HintText: Enter your Azure Subscription ID.
+    
+    - Name: WorkspaceName
+      Description: The name Sentinel workspace that you'd like to reference.
+      SettingType: string
+      Required: true
+      HintText: Enter the Sentinel workspace that you'd like to reference.
+      
+    - Name: ResourceGroupName
+      Description: The Resource Group where the Sentinel workspace is provisioned..
+      SettingType: string
+      HintText: Enter your Resource Group where the Sentinel workspace is provisioned.
+      Required: true
+
+  SupportedAuthTypes:
+    - None
+  
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetHighAndCriticalAlertsForTheLast7Days
+        DisplayName: Get high and critical alerts over the past 7 days
+        Description: Gets all high and critical Microsoft Defender alerts over the past 7 days
+        DescriptionForModel: |
+          This query filters and retrieves alerts from the AlertInfo table where the severity is either 'High' or 'Critical' and the alert was generated within the past 7 days. It helps identify recent high-priority issues for quick action or review.
+        ExamplePrompts:
+          - Get high and critical Defender alerts for the last 7 days
+          - Get high and critical Microsoft Defender alerts for the last 7 days
+          - Get high and critical MDE alerts for the last 7 days
+          - Get high and critical Defender alerts for the last week
+          - Get high and critical Microsoft Defender alerts for the last week
+          - Get high and critical MDE alerts for the last week          
+          - Get recent high and critical Defender alerts
+          - Get recent high and critical Microsoft Defender alerts
+          - Get recent high and critical MDE alerts
+        Settings:
+          Target: Defender
+          Template: |-
+            // This KQL query filters the AlertInfo table for high and critical alerts generated in the past 7 days, displaying only the AlertId, Title, and TimeGenerated fields.
+            AlertInfo
+            | where Severity in ('High', 'Critical')
+            | where TimeGenerated > ago(7d)
+            | project AlertId, Title, TimeGenerated
+
+      - Name: GetSigninData
+        DisplayName: Get sign-in data over the past n-days
+        Description: Gets Entra sign-in data for a user provided UPN between now and a user suppled day count.
+        DescriptionForModel: |
+          This query retrieves the latest sign-in date for a specified user within a given range of days, based on the UserPrincipalName. It is useful for tracking recent user activity and monitoring sign-in patterns within a defined timeframe.
+        ExamplePrompts:
+          - Get sign-in data for the last days
+          - Get login data for the last days
+          - Get Entra sign-in data for the last days
+          - Get Entra login data for the last days
+        Inputs:
+          - Name: dayRange
+            PlaceholderValue: The time range for the query (e.g., 1d, 7d)
+            Description: Time range to perform a KQL query in the format of day number followed by `d`.
+            DefaultValue: 1d
+            Required: false
+        Settings:
+          Target: Sentinel
+          TenantId: '{{TenantId}}'
+          SubscriptionId: '{{SubscriptionId}}'
+          ResourceGroupName: '{{ResourceGroupName}}'
+          WorkspaceName: '{{WorkspaceName}}'
+          Template: |-
+            // This KQL query retrieves sign-in logs from the SigninLogs table for the past  days, summarizing the most recent sign-in for each user by UPN, and then displays only the UPN and  LastSignInDate fields.
+            SigninLogs
+            | where TimeGenerated >= ago({{dayRange}})
+            | summarize LastSignInDate=max(TimeGenerated) by UserPrincipalName 
+            | project UserPrincipalName, LastSignInDate          
+
+      - Name: ShowUserIPinfo
+        DisplayName: Show user IP addresses
+        Description: Lists unique IP logins for a given user
+        DescriptionForModel: This query retrieves the unique IP addresses a specific user has used for authentication, counting the frequency of each IP and showing the last login time. It helps track user activity across different IPs and the most recent usage of each.
+        ExamplePrompts:
+          - Use Sentinel and show all unique for all IP addresses for this user
+          - Show the unique IPs for user
+          - What are the unique IP addresses for user
+        Inputs:
+          - Name: UserPrincipalNameYouAreLookingUp
+            Description: User Principal Name to search for (e.g. user@mydomain.com)
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          SubscriptionId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+          ResourceGroupName: yourSentinelResourceGroup
+          WorkspaceName: yourSentinelWorkspace
+          Template: |-
+            // This KQL query filters the SigninLogs table for entries associated with a specific user (UserPrincipalNameYouAreLookingUp), then aggregates the data to count the total sign-ins (Count) and determine the most recent sign-in time (LastUsed) for each unique `IPAddress` used by that user, displaying only the `IPAddress`, `Count`, and `LastUsed` fields.
+            SigninLogs
+            | where UserPrincipalName == "{{UserPrincipalNameYouAreLookingUp}}"
+            | summarize Count = count(), LastUsed = max(TimeGenerated) by IPAddress
+            | project IPAddress, Count, LastUsed
+
