@@ -32,31 +32,7 @@ Descriptor:
   
 SkillGroups:
   - Format: KQL
-    Skills:
-      - Name: GetHighAndCriticalAlertsForTheLast7Days
-        DisplayName: Get high and critical alerts over the past 7 days
-        Description: Gets all high and critical Microsoft Defender alerts over the past 7 days
-        DescriptionForModel: |
-          This query filters and retrieves alerts from the AlertInfo table where the severity is either 'High' or 'Critical' and the alert was generated within the past 7 days. It helps identify recent high-priority issues for quick action or review.
-        ExamplePrompts:
-          - Get high and critical Defender alerts for the last 7 days
-          - Get high and critical Microsoft Defender alerts for the last 7 days
-          - Get high and critical MDE alerts for the last 7 days
-          - Get high and critical Defender alerts for the last week
-          - Get high and critical Microsoft Defender alerts for the last week
-          - Get high and critical MDE alerts for the last week          
-          - Get recent high and critical Defender alerts
-          - Get recent high and critical Microsoft Defender alerts
-          - Get recent high and critical MDE alerts
-        Settings:
-          Target: Defender
-          Template: |-
-            // This KQL query filters the AlertInfo table for high and critical alerts generated in the past 7 days, displaying only the AlertId, Title, and TimeGenerated fields.
-            AlertInfo
-            | where Severity in ('High', 'Critical')
-            | where TimeGenerated > ago(7d)
-            | project AlertId, Title, TimeGenerated
-
+    Skills:      
       - Name: GetSigninData
         DisplayName: Get sign-in data over the past n-days
         Description: Gets Entra sign-in data for a user provided UPN between now and a user suppled day count.
