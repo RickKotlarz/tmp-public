@@ -11,19 +11,16 @@ Descriptor:
       HintText: Enter your Azure Tenant ID
       SettingType: string
       Required: true
-      
     - Name: SubscriptionId
       Description: Your Azure Subscription ID where the Sentinel workspace is provisioned.
       SettingType: string
       Required: true
       HintText: Enter your Azure Subscription ID.
-    
     - Name: WorkspaceName
       Description: The name Sentinel workspace that you'd like to reference.
       SettingType: string
       Required: true
       HintText: Enter the Sentinel workspace that you'd like to reference.
-      
     - Name: ResourceGroupName
       Description: The Resource Group where the Sentinel workspace is provisioned..
       SettingType: string
