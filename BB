@@ -1,0 +1,21 @@
+          Target: Defender
+          Template: |-
+            let registry_persistence_keys = dynamic(["HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+              "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+              "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce",
+              "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce",
+              "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+              "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services"]);
+            let timeFrame = 24h;
+            let registry_events = DeviceRegistryEvents
+            | where RegistryKey in~ (registry_persistence_keys)
+            | where Timestamp >= ago(timeFrame)
+            | project Timestamp, DeviceId, DeviceName, RegistryKey, RegistryValueName, RegistryValueData, InitiatingProcessId, InitiatingProcessFileName, InitiatingProcessCommandLine;      
+            let process_events = DeviceProcessEvents
+            | where ProcessCommandLine has_any ("schtasks", "at", "wmic", "powershell", "cmd.exe /c", "cmd.exe /k")
+            | where Timestamp >= ago(timeFrame)
+            | project Timestamp, DeviceId, DeviceName, ProcessId, ProcessCommandLine, InitiatingProcessId, InitiatingProcessFileName, InitiatingProcessCommandLine;
+            registry_events
+            | join kind=inner process_events on DeviceId
+            | where Timestamp >= ago(timeFrame)
+            | project Timestamp=Timestamp1, DeviceId, DeviceName, RegistryKey, RegistryValueName, RegistryValueData, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine
