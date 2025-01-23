@@ -1,0 +1,30 @@
+Descriptor:
+  Name: ResourceGraphTest
+  DisplayName: ResourceGraphTest - 
+  Description: ResourceGraphTest
+  DescriptionForModel: ResourceGraphTest
+
+  SupportedAuthTypes:
+    - None
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+
+      - Name: ResourceGraphTest
+        DisplayName: ResourceGraphTest
+        Description: ResourceGraphTest
+        DescriptionForModel: |
+          ResourceGraphTest
+        ExamplePrompts:
+          - ResourceGraphTest
+        Settings:
+          Target: Defender
+          Template: |-
+            // Calls resource graph table 'resourcechanges' 
+            //    https://learn.microsoft.com/en-us/azure/governance/resource-graph/concepts/query-language
+            arg("").resourcechanges
+            | extend timestamp = todatetime(properties["changeAttributes"]["timestamp"])| extend changes = properties["changes"]
+            | extend ResourceId = tostring(properties["targetResourceId"])
+            | extend CorrelationId = tostring(properties["changeAttributes"]["correlationId"])| where timestamp >= ago(1d)
+            | take 5
