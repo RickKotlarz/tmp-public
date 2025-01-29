@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
     title: EntraID Access Review Plugin
     description: The skills in this plugin will help create access reviews in EntraID, including User details like groups, licenses via Graph API Call
-    version: "v1.0.5"
+    version: "v1.0.6"
 servers:
     - url: https://graph.microsoft.com/v1.0
      
@@ -11,8 +11,8 @@ paths:
   /users/{userIdentifier}/transitiveMemberOf:
     get:
       operationId: RetrieveTransitiveMemberOf
-      displayName: Retrieve transitive member for user (Skill:RetrieveTransitiveMemberOf)
-      description: Fetch all transitive memberships of a user.
+      displayName: Retrieve transitive member details (Skill:RetrieveTransitiveMemberOf)
+      description: Fetch all transitive memberships details for a user.
       descriptionForModel: Fetch all transitive memberships of a user, including groups and directory roles in Entra ID. Transitivmemberships include both direct and indirect memberships, such as those assigned via group nesting. 
       parameters:
         - in: path
