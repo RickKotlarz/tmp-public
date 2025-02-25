@@ -3,17 +3,16 @@ openapi: 3.0.0
 info:
     title: MDE exclusion plugin
     description: API plugin skills to retrieve threat indicators from Microsoft Defender for Endpoint.
-    version: "v1.5"
+    version: "v1.6"
 
 servers:
-   - url: https://us.api.security.microsoft.com/api
+  - url: https://us.api.security.microsoft.com/api
    
 paths:
 ##################################################################################################################
 # List Indicators API
 #  https://learn.microsoft.com/en-us/defender-endpoint/api/get-ti-indicators-collection
 ##################################################################################################################
-
   /indicators:
     get:
       operationId: MDE-test
@@ -103,9 +102,7 @@ paths:
         "500":
           description: Internal Server Error.
 
-#################################################################################
-
-          
+        
 #################################################################################
 # https://us.api.security.microsoft.com/api/indicators?$filter=contains(tolower(description), 'Demo')
 
