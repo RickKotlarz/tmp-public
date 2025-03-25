@@ -6,7 +6,7 @@ info:
   title: Palo Alto XSOAR
   description: Plugin example leveraging the Palo Alto XSOAR API
   descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API
-  version: 'v3.0.5'
+  version: 'v3.0.6'
 
 servers:
   - url: https://api-02019896801prod.crtx.us.paloaltonetworks.com
@@ -33,7 +33,7 @@ components:
       schema:
         type: string
 #        default: 1234          # API authentication ID to be passed during each request. DO NOT encapsulate the value in
-        default: 39          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
+        defaultValue: 39          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
