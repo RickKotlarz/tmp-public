@@ -22,4 +22,4 @@ Descriptor:
 SkillGroups:
   - Format: API
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/PA-XSOAR-test/Palo_Alto_XSOAR_template_OAPI.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/PA-XSOAR-without-API-x-xdr-auth-id/Palo_Alto_XSOAR_template_OAPI.yaml
