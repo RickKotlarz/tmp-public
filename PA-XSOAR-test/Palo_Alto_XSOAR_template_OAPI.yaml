@@ -33,7 +33,7 @@ components:
       schema:
         type: string
 #        default: 1234          # API authentication ID to be passed during each request. DO NOT encapsulate the value in
-        defaultValue: 39          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
+        defaultValue: 40          # API authentication ID to be passed during each request. DO NOT encapsulate the value in quotes.
   securitySchemes:
     apiKeyIDAuth:              # Arbitrary name for the security scheme
       type: apiKey
