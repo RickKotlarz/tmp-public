@@ -9,8 +9,8 @@ info:
   version: 'v3.0.6'
 
 servers:
-  - url: https://api-02019896801prod.crtx.us.paloaltonetworks.com
-
+  - url: https://api-02019896801prod.crtx.us.paloaltonetworks.com/xsoar/
+ 
 #   Replace the above URL with your Palo Alto XSOAR URL.
 
 #######################################################################################################
