@@ -1,0 +1,29 @@
+# Author Rick Kotlarz ~ https://github.com/RickKotlarz/
+# https://cortex-panw.stoplight.io/docs/cortex-xsoar-8/
+# Updated 2025-March-25
+
+Descriptor:
+  Name: Palo Alto XSOAR plugin without-API-x-xdr-auth-id
+  DisplayName: Palo Alto XSOAR without-API-x-xdr-auth-id - v3.0.2
+  Description: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id - v3.0.2
+  DescriptionForModel: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id
+  Icon: https://avatars.githubusercontent.com/u/70215919
+
+  SupportedAuthTypes:
+    - ApiKey
+
+  Authorization:
+    Type: APIKey
+    Key: Authorization
+      # Name of the header or query parm (default is 'Authorization') this is the string that's sent to the endpoint along with the value set in the 'parameters' field of the plugin.
+#   Value:
+      # Used to hardcode the API key - Avoid using this as much as possible. If used, DO NOT upload this file to a public resource
+    Location: Header
+      # Location of key, can be 'Header' or 'QueryParams' (default is 'Header')
+    AuthScheme: ''
+      # The name of the authentication scheme which will be prepended to the 'Value' when passed in the header. This can be left blank (e.g. ''), 'Bearer' or 'Basic')
+
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/PA-XSOAR-without-API-x-xdr-auth-id_v3/Palo_Alto_XSOAR_template_OAPI.yaml
