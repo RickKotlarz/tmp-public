@@ -1,11 +1,11 @@
 # Author Rick Kotlarz ~ https://github.com/RickKotlarz/
 # https://cortex-panw.stoplight.io/docs/cortex-xsoar-8/
-# Updated 2025-March-25
+# Updated 2025-March-26
 
 Descriptor:
   Name: Palo Alto XSOAR plugin without-API-x-xdr-auth-id
-  DisplayName: Palo Alto XSOAR without-API-x-xdr-auth-id - v3.0.2
-  Description: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id - v3.0.2
+  DisplayName: Palo Alto XSOAR without-API-x-xdr-auth-id - v3.0.3
+  Description: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id - v3.0.3
   DescriptionForModel: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id
   Icon: https://avatars.githubusercontent.com/u/70215919
 
