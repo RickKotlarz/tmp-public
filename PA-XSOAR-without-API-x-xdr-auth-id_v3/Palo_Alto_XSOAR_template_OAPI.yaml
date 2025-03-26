@@ -6,7 +6,7 @@ info:
   title: Palo Alto XSOAR without-API-x-xdr-auth-id v3.0.3
   description: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id v3.0.3
   descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API without-API-x-xdr-auth-id
-  version: 'v3.0.2'
+  version: 'v3.0.3'
 
 servers:
   - url: https://api-02019896801prod.crtx.us.paloaltonetworks.com/xsoar/
