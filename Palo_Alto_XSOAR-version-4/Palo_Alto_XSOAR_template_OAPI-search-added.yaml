@@ -1,10 +1,10 @@
 openapi: 3.0.1
 
 info:
-  title: Palo Alto XSOAR - v3.0.8
-  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.8
+  title: Palo Alto XSOAR - v3.0.
+  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.9
   descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API
-  version: v3.0.8
+  version: v3.0.9
 
 servers:
   - url: https://api-02019896801dev.crtx.us.paloaltonetworks.com/xsoar/
