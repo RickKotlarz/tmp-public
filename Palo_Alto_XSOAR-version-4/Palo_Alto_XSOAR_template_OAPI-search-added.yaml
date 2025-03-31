@@ -1,0 +1,179 @@
+# Author Rick Kotlarz ~ https://github.com/RickKotlarz/
+# Updated 2025-March-25
+
+openapi: 3.0.1
+
+info:
+  title: Palo Alto XSOAR - v3.0.8
+  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.8
+  descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API
+  version: v3.0.8
+
+servers:
+  - url: https://api-02019896801dev.crtx.us.paloaltonetworks.com/xsoar/
+
+components:
+  parameters:
+    x-xdr-auth-id:
+      name: x-xdr-auth-id
+      in: header
+      required: false
+      description: 'Alternate API key ID'
+      schema:
+        type: string
+        default: 19
+  securitySchemes:
+    apiKeyIDAuth:
+      type: apiKey
+      in: header
+      name: x-xdr-auth-id
+      description: 'Your API key ID'
+    apiKeySecretAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Your API Key Secret used for authentication.'
+  security:
+    - apiKeyIDAuth: []
+      apiKeySecretAuth: []
+
+  schemas:
+    DateRangeFilter:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          format: date-time
+        toDate:
+          type: string
+          format: date-time
+        period:
+          $ref: '#/components/schemas/Period'
+        timeFrame:
+          type: integer
+          description: Time frame in nanoseconds.
+    Period:
+      type: object
+      properties:
+        by:
+          type: string
+        fromValue:
+          type: string
+        toValue:
+          type: string
+    SortOption:
+      type: object
+      properties:
+        asc:
+          type: boolean
+        field:
+          type: string
+        fieldType:
+          type: string
+
+paths:
+
+  /public/v1/incident/load/{id}:
+    get:
+      operationId: X-GetIncident
+      displayName: X-GetIncident
+      description: Palo Alto XSOAR - Get a specific incident
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Incident ID to look up
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+      responses:
+        '200':
+          description: Successfully retrieved incident details
+        '400':
+          description: Bad request
+
+  /public/v1/dashboards:
+    get:
+      operationId: X-GetAllDashboardDetails
+      displayName: X-GetAllDashboardDetails
+      description: Palo Alto XSOAR - Get all dashboards details
+      parameters:
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+      responses:
+        '200':
+          description: Successfully retrieved all dashboard details
+        '400':
+          description: Bad request
+
+  /public/v1/dashboards/{dashboardId}:
+    get:
+      operationId: X-GetDashboardDetails
+      displayName: X-GetDashboardDetails
+      description: Palo Alto XSOAR - Get details for specific dashboard
+      parameters:
+        - in: path
+          name: dashboardId
+          required: true
+          schema:
+            type: string
+          description: Dashboard to look up
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+      responses:
+        '200':
+          description: Successfully retrieved dashboard details
+        '400':
+          description: Bad request
+
+  /public/v1/indicators/search:
+    post:
+      operationId: X-SearchIndicators
+      displayName: X-SearchIndicators
+      description: Search for indicators based on a search query.
+      parameters:
+        - $ref: '#/components/parameters/x-xdr-auth-id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: >
+                    Enter the search string for indicators.
+                    For example: "ip:1.2.3.4", "domain:example.com", or general keywords.
+                fields:
+                  type: array
+                  items:
+                    type: string
+                  description: List of fields to include in the response (optional).
+                filterobjectquery:
+                  type: string
+                  description: Additional filtering logic using XSOAR syntax (optional).
+                size:
+                  type: integer
+                  description: Number of results to return (default 100, max 10000).
+                sort:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SortOption'
+                firstSeen:
+                  $ref: '#/components/schemas/DateRangeFilter'
+                lastSeen:
+                  $ref: '#/components/schemas/DateRangeFilter'
+                timeFrame:
+                  type: integer
+                  description: Time frame for the search in nanoseconds.
+                toDate:
+                  type: string
+                  format: date-time
+                  description: End date for the search range (optional).
+      responses:
+        '200':
+          description: A list of matching indicators
+        '400':
+          description: Bad request
+
