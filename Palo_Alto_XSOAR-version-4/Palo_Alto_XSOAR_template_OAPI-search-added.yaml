@@ -1,10 +1,10 @@
 openapi: 3.0.1
 
 info:
-  title: Palo Alto XSOAR - v3.0.
-  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.9
+  title: Palo Alto XSOAR - v3.0.10
+  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.10
   descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API
-  version: v3.0.9
+  version: v3.0.10
 
 servers:
   - url: https://api-02019896801dev.crtx.us.paloaltonetworks.com/xsoar/
@@ -35,20 +35,6 @@ components:
       apiKeySecretAuth: []
 
   schemas:
-    DateRangeFilter:
-      type: object
-      properties:
-        fromDate:
-          type: string
-          format: date-time
-        toDate:
-          type: string
-          format: date-time
-        period:
-          $ref: '#/components/schemas/Period'
-        timeFrame:
-          type: integer
-          description: Time frame in nanoseconds.
     Period:
       type: object
       properties:
@@ -119,6 +105,12 @@ paths:
       description: Search for indicators based on a search query.
       parameters:
         - $ref: '#/components/parameters/x-xdr-auth-id'
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token or API Key
       requestBody:
         required: true
         content:
@@ -150,9 +142,45 @@ paths:
                     type: string
                   description: List of sort instructions like "fieldName:asc" or "fieldName:desc"
                 firstSeen:
-                  $ref: '#/components/schemas/DateRangeFilter'
+                  type: object
+                  properties:
+                    fromDate:
+                      type: string
+                      format: date-time
+                    toDate:
+                      type: string
+                      format: date-time
+                    period:
+                      type: object
+                      properties:
+                        by:
+                          type: string
+                        fromValue:
+                          type: string
+                        toValue:
+                          type: string
+                    timeFrame:
+                      type: integer
                 lastSeen:
-                  $ref: '#/components/schemas/DateRangeFilter'
+                  type: object
+                  properties:
+                    fromDate:
+                      type: string
+                      format: date-time
+                    toDate:
+                      type: string
+                      format: date-time
+                    period:
+                      type: object
+                      properties:
+                        by:
+                          type: string
+                        fromValue:
+                          type: string
+                        toValue:
+                          type: string
+                    timeFrame:
+                      type: integer
                 timeFrame:
                   type: integer
                   description: Time frame for the search in nanoseconds.
