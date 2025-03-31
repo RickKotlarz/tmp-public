@@ -27,4 +27,5 @@ Descriptor:
 SkillGroups:
   - Format: API
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/Palo_Alto_XSOAR-version-4/Palo_Alto_XSOAR_template_OAPI-search-added.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/main/Palo_Alto_XSOAR-version-4/Palo_Alto_XSOAR_template_OAPI-search-added.yaml
+      #https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/Palo_Alto_XSOAR-version-4/Palo_Alto_XSOAR_template_OAPI-search-added.yaml
