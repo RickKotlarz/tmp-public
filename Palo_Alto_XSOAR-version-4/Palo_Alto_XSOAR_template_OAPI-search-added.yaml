@@ -1,10 +1,10 @@
 openapi: 3.0.1
 
 info:
-  title: Palo Alto XSOAR - v3.0.10
-  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.10
+  title: Palo Alto XSOAR - v3.0.11
+  description: Plugin example leveraging the Palo Alto XSOAR API - v3.0.11
   descriptionForModel: Plugin example leveraging the Palo Alto XSOAR API
-  version: v3.0.10
+  version: v3.0.11
 
 servers:
   - url: https://api-02019896801dev.crtx.us.paloaltonetworks.com/xsoar/
@@ -102,15 +102,9 @@ paths:
     post:
       operationId: X-SearchIndicators
       displayName: X-SearchIndicators
-      description: Search for indicators based on a search query.
+      description: Search for indicators based on a query string only.
       parameters:
         - $ref: '#/components/parameters/x-xdr-auth-id'
-        - in: header
-          name: Authorization
-          required: true
-          schema:
-            type: string
-          description: Bearer token or API Key
       requestBody:
         required: true
         content:
@@ -125,72 +119,9 @@ paths:
                   description: >
                     Enter the search string for indicators.
                     For example: "ip:1.2.3.4", "domain:example.com", or general keywords.
-                fields:
-                  type: array
-                  items:
-                    type: string
-                  description: List of fields to include in the response (optional).
-                filterobjectquery:
-                  type: string
-                  description: Additional filtering logic using XSOAR syntax (optional).
-                size:
-                  type: integer
-                  description: Number of results to return (default 100, max 10000).
-                sort:
-                  type: array
-                  items:
-                    type: string
-                  description: List of sort instructions like "fieldName:asc" or "fieldName:desc"
-                firstSeen:
-                  type: object
-                  properties:
-                    fromDate:
-                      type: string
-                      format: date-time
-                    toDate:
-                      type: string
-                      format: date-time
-                    period:
-                      type: object
-                      properties:
-                        by:
-                          type: string
-                        fromValue:
-                          type: string
-                        toValue:
-                          type: string
-                    timeFrame:
-                      type: integer
-                lastSeen:
-                  type: object
-                  properties:
-                    fromDate:
-                      type: string
-                      format: date-time
-                    toDate:
-                      type: string
-                      format: date-time
-                    period:
-                      type: object
-                      properties:
-                        by:
-                          type: string
-                        fromValue:
-                          type: string
-                        toValue:
-                          type: string
-                    timeFrame:
-                      type: integer
-                timeFrame:
-                  type: integer
-                  description: Time frame for the search in nanoseconds.
-                toDate:
-                  type: string
-                  format: date-time
-                  description: End date for the search range (optional).
       responses:
         '200':
-          description: A list of matching indicators
+          description: OK
         '400':
           description: Bad request
         '401':
