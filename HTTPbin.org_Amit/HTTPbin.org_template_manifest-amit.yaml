@@ -1,0 +1,31 @@
+# Author Rick Kotlarz - https://github.com/RickKotlarz/
+# Plugin updated 2025-Jan-08
+
+Descriptor:
+  Name: HTTPbin.org Example-amit
+  DisplayName: httpbin.org - API Key Authentication-amit
+  Description: Plugin example for making example http requests - v0.9.17-amit
+  DescriptionForModel: Plugin example for making example http requests
+
+#  Settings:
+#    - Name: settingTestName                # Links to the plugin but not used yet for this plugin
+#      Label: Label in the UI               # Used for the UI only
+#      Description: Description goes here   # Used for the UI only
+#      HintText: Hint Text goes here        # Used for the UI only
+#      SettingType: String                  # Used to ensure the key is visible to the user (default is 'SecretString')
+#      Required: false
+      
+  SupportedAuthTypes:
+    - ApiKey
+    
+  Authorization:
+    Type: APIKey
+    Key: x-test-api-key   # Name of the header or query parm (default is 'Authorization') this is the string that's sent to the endpoint along with the value set in the 'parameters' field of the plugin.
+#   Value:                # Used to hardcode the API key - Avoid using this as much as possible. If used, DO NOT upload this file to a public resource
+    Location: Header      # Location of key, can be 'Header' or 'QueryParams' (default is 'Header')
+    AuthScheme: ''        # The name of the authentication scheme which will be prepended to the 'Value' when passed in the header. This can be left blank (e.g. ''), 'Bearer' or 'Basic')   
+    
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/HTTPbin.org_Amit/HTTPbin.org_template_OAPI-amit.yaml
