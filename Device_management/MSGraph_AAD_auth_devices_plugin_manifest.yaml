@@ -1,0 +1,24 @@
+# Author Rick Kotlarz
+# Plugin updated 2025-APR-21
+
+Descriptor:
+  Name: Microsoft Graph API - Devices
+  DisplayName: API plugin to interact with devices in Microsoft Entra (Azure AD)
+  Description: API plugin to interact with devices in Microsoft Entra (Azure AD)
+  DescriptionForModel: |
+    Skills demo associated with requestion information via Graph API calls with OData
+
+  SupportedAuthTypes:
+    - AADDelegated
+
+  Authorization:
+    Type: AADDelegated
+    EntraScopes: https://graph.microsoft.com/.default
+
+  Icon: https://raw.githubusercontent.com/icons8/windows-10-icons/refs/heads/master/svg/production/airport.svg
+# https://github.com/icons8/windows-10-icons
+
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/RickKotlarz/tmp-public/refs/heads/main/Device_management/MSGraph_AAD_auth_devices_plugin.yaml
