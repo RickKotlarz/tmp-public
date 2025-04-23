@@ -18,7 +18,7 @@ paths:
     get:
       operationId: TestApiKeyAuthv2
       summary: Returns the provided headers
-      parameters:
+#     parameters:
 #       - $ref: '#/components/parameters/x-xdr-auth-id'
         # The above parameter inserts the 'x-xdr-auth-id' and default value into the header when the 'TestApiKeyAuth' is executed by the user.
       responses:
