@@ -16,7 +16,7 @@ servers:
 paths:
   /headers:
     get:
-      operationId: TestApiKeyAuth
+      operationId: TestApiKeyAuthv2
       summary: Returns the provided headers
       parameters:
 #       - $ref: '#/components/parameters/x-xdr-auth-id'
