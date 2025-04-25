@@ -27,7 +27,7 @@ SkillGroups:
         Settings:
           Target: Sentinel
           TenantId: c7f6413d-1e73-45d2-b0da-a68713b515a7
-          SubscriptionId: sub-security-monitoring-prod
+          SubscriptionName: sub-security-monitoring-prod
           ResourceGroupName: rg-sentinel-prod-use2
           WorkspaceName: sn-smbc-prod-use2
           Template: |-
